@@ -1,6 +1,5 @@
 
-define(function(require) {
-    var Crafty = require('crafty');
+define(['crafty', function(Crafty) {
 
     Crafty.c("Expires", {
         _time: 2000,

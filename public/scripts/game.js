@@ -1,6 +1,6 @@
 
-define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'],
-        function(Crafty, $) {
+define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'
+    ], function(Crafty, $) {
     var self = this;
     var map;
     
@@ -66,6 +66,14 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'],
                         .addComponent("Collision")
                         .collision();							
                 }
+
+                //Set viewport bounds to map bounds
+                var map = tiledmap.getSource();
+                var bounds = { min: {x:0, y:0},
+                   max: {x: map.width * map.tilewidth,
+                         y: map.height * map.tileheight}
+                };
+                Crafty.viewport.bounds = bounds;
             });
                                                                                                                                     
         //Player
@@ -79,9 +87,6 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'],
             .fourway(10)
             .collision( new Crafty.polygon([10,60],[40,60],[40,67],[10,67]) )
             .gravity('Platforms')
-            .bind("Moved", function(oldpos) {
-                Crafty.viewport.centerOn(this, 0);
-            })
             .bind("NewDirection", function (direction) {
                     if (direction.x < 0) {
                         if (!this.isPlaying("walk_left"))
@@ -103,5 +108,6 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'],
                         this.animate("idle");
                     }
             });
+        Crafty.viewport.follow(player, 0, 0);
     });
 });
