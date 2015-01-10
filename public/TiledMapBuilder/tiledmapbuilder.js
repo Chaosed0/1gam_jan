@@ -83,7 +83,7 @@ Crafty.c("TiledMapBuilder", {
 		if( this.tileMapBuilderSetting.USE_WEB_WORKERS && typeof(Worker)!=="undefined"){								
 			this.doInBackground({startRow:startRow, startColumn:startColumn, viewWidth:viewWidth, viewHeight:viewHeight, renderMethod:this._renderMethod, source:this._source});
 			
-		}else{		
+		} else {
 			// Do not forget attach module: <script src="path/to/create_mocks_module.js"></script>
 			MockModule.init( startRow, startColumn, viewWidth, viewHeight, this._renderMethod, this._source );
 			this._layers = this.createEntitiesFromMock( MockModule.createMockEntities() );	
@@ -256,7 +256,7 @@ Crafty.c("TiledMapBuilder", {
 	 * @see http://craftyjs.com/api/Crafty-sprite.html - Crafty.sprite() documentation
 	 */
 	createSprite:function( tileset ){		
-		return Crafty.sprite(tileset.tilewidth, tileset.tileheight, tileset.image, this.arrangeTiles( tileset ), tileset.margin, tileset.margin);										
+		return Crafty.sprite(tileset.tilewidth, tileset.tileheight, tileset.image, this.arrangeTiles( tileset ), tileset.spacing, tileset.spacing, tileset.margin);
 	},
 	
 	/*
@@ -268,8 +268,8 @@ Crafty.c("TiledMapBuilder", {
 	 */
 	arrangeTiles:function(tileset){	
 			
-		var numberOfColumns = Math.round(tileset.imagewidth / (tileset.tilewidth+tileset.margin));
-	    var numberOfRows = Math.round(tileset.imageheight / (tileset.tileheight+tileset.margin));
+		var numberOfColumns = Math.floor(tileset.imagewidth / (tileset.tilewidth+tileset.spacing));
+	    var numberOfRows = Math.floor(tileset.imageheight / (tileset.tileheight+tileset.spacing));
 		
 		var tilesMap = {};		
 		for(var row = 0; row < numberOfRows; row++ ){
