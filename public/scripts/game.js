@@ -77,14 +77,14 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'
             });
                                                                                                                                     
         //Player
-        var player = Crafty.e("2D, Canvas, Fourway, Gravity, SpriteAnimation, Ogre, Collision")
+        var player = Crafty.e("2D, Canvas, Twoway, Gravity, SpriteAnimation, Ogre, Collision")
             .attr({x: 150, y: 50, z: 10})
             .reel("idle", 1000, 0, 0, 1)
             .reel("walk_down", 500, 0, 0, 4)
             .reel("walk_left", 500, 0, 1, 4)
             .reel("walk_right", 500, 0, 2, 4)
             .reel("walk_up", 500, 0, 3, 4)
-            .fourway(10)
+            .twoway(6, 8)
             .collision( new Crafty.polygon([10,60],[40,60],[40,67],[10,67]) )
             .gravity('Platforms')
             .bind("NewDirection", function (direction) {
