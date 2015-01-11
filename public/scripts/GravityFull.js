@@ -39,11 +39,13 @@ define(['crafty'], function(Crafty) {
         _moved: function(oldpos) {
             var gotHit = this.hit(this._anti);
             if (gotHit) {
+                var obj = gotHit[0];
                 if (this._y > oldpos.y) {
                     if(this._up) this._up = false;
                     this._falling = false;
                 }
-                this.attr({x: oldpos.x, y: oldpos.y});
+                this.attr({x: this._x - obj.normal.x * obj.overlap,
+                    y: this._y - obj.normal.y * obj.overlap});
                 this.trigger("hit");
             } else if(!gotHit) {
                 this._falling = true; //keep falling otherwise
