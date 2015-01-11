@@ -1,5 +1,6 @@
 
-define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'
+define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
+        './GravityFull'
     ], function(Crafty, $) {
     var self = this;
     var map;
@@ -77,7 +78,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'
             });
                                                                                                                                     
         //Player
-        var player = Crafty.e("2D, Canvas, Twoway, Gravity, SpriteAnimation, Ogre, Collision")
+        var player = Crafty.e("2D, Canvas, Twoway, GravityFull, SpriteAnimation, Ogre, Collision")
             .attr({x: 150, y: 50, z: 10})
             .reel("idle", 1000, 0, 0, 1)
             .reel("walk_down", 500, 0, 0, 4)
@@ -85,8 +86,8 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks'
             .reel("walk_right", 500, 0, 2, 4)
             .reel("walk_up", 500, 0, 3, 4)
             .twoway(6, 8)
-            .collision( new Crafty.polygon([10,60],[40,60],[40,67],[10,67]) )
-            .gravity('Platforms')
+            .collision()
+            .gravityfull('Platforms')
             .bind("NewDirection", function (direction) {
                     if (direction.x < 0) {
                         if (!this.isPlaying("walk_left"))
