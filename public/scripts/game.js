@@ -68,7 +68,8 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
                         .collision();							
                 }
 
-                //Set viewport bounds to map bounds
+                //Set viewport bounds to map bounds; if we let it auto-clamp to entities,
+                // the number of entities that TiledMapBuilder creates destroys framerate
                 var map = tiledmap.getSource();
                 var bounds = { min: {x:0, y:0},
                    max: {x: map.width * map.tilewidth,

@@ -15,7 +15,6 @@ define(['crafty'], function(Crafty) {
             if(isNaN(this._jumpSpeed)) this._jumpSpeed = 0; //set to 0 if Twoway component is not present
 
             this.bind("EnterFrame", this._enterFrame);
-            this.bind("Moved", this._moved);
 
             return this;
         },
@@ -34,20 +33,22 @@ define(['crafty'], function(Crafty) {
             } else {
                 this._gy = 0; //reset change in y
             }
-        },
 
-        _moved: function(oldpos) {
+            //If, after falling, we're intersecting, push the player out
             var gotHit = this.hit(this._anti);
             if (gotHit) {
+                console.log("hit something");
                 var obj = gotHit[0];
-                if (this._y > oldpos.y) {
-                    if(this._up) this._up = false;
-                    this._falling = false;
-                }
+                if(this._up) this._up = false;
+                this._falling = false;
+                //Add 1 to y so we're still hitting the obstacle;
+                // otherwise, we alternate between falling/not falling
+                // every frame
                 this.attr({x: this._x - obj.normal.x * obj.overlap,
-                    y: this._y - obj.normal.y * obj.overlap});
+                    y: this._y - obj.normal.y * obj.overlap + 1});
                 this.trigger("hit");
-            } else if(!gotHit) {
+            } else {
+                console.log("not hitting something");
                 this._falling = true; //keep falling otherwise
             }
             this.z = Math.floor(this._y + this._h);
