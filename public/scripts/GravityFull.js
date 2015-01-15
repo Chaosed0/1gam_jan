@@ -42,7 +42,8 @@ define(['crafty'], function(Crafty) {
                 // otherwise, we alternate between falling/not falling
                 // every frame
                 this.attr({x: this._x - obj.normal.x * obj.overlap,
-                    y: this._y - obj.normal.y * obj.overlap + 1});
+                    y: this._y - obj.normal.y * obj.overlap + 
+                        (obj.normal.y != 0 ? 1 : 0)});
                 this.trigger("hit");
                 if(obj.normal.y < 0) {
                     //If we were falling, stop falling
