@@ -57,15 +57,26 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
     Crafty.scene("Main", function () {
                                     
         console.log("MAIN");
+        var playerSpawnLoc = {x: 150, y:50};
 
         Crafty.e("2D, Canvas, TiledMapBuilder").setMapDataSource(map)
             .createWorld(function(tiledmap) {
                 //Platforms
-                var platformTiles = tiledmap.getEntitiesInLayer('Platforms');
-                for (var platform = 0; platform < platformTiles.length; platform++){
-                    platformTiles[platform]
+                var platformTiles = tiledmap.getEntitiesInLayer("Platforms");
+                for (var i = 0; i < platformTiles.length; i++){
+                    platformTiles[i]
                         .addComponent("Collision")
                         .collision();							
+                }
+
+                //Objects
+                var objects = tiledmap.getEntitiesInLayer("Objects");
+                for (var i = 0; i < objects.length; i++) {
+                    var object = objects[i];
+                    if(object.has("PlayerSpawn")) {
+                        playerSpawnLoc = { x: object.x + object.w / 2.0,
+                                           y: object.y + object.h / 2.0 };
+                    }
                 }
 
                 //Set viewport bounds to map bounds; if we let it auto-clamp to entities,
@@ -80,7 +91,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
                                                                                                                                     
         //Player
         var player = Crafty.e("2D, Canvas, Twoway, GravityFull, SpriteAnimation, Ogre, Collision")
-            .attr({x: 150, y: 50, z: 10})
+            .attr({ x: playerSpawnLoc.x, y: playerSpawnLoc.y, z: 10 })
             .reel("idle", 1000, 0, 0, 1)
             .reel("walk_down", 500, 0, 0, 4)
             .reel("walk_left", 500, 0, 1, 4)
