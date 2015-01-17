@@ -60,7 +60,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
 
     var makeSlime = function(pos) {
         return Crafty.e("2D, Canvas, GravityFull, SpriteAnimation, Slime, Collision, Enemy")
-            .attr({x: 500, y: 50})
+            .attr({x: pos.x, y: pos.y})
             .reel("idle", 750, 0, 0, 10)
             .reel("die", 500, 0, 1, 5)
             .animate("idle", -1)
@@ -89,6 +89,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
                     var object = objects[i];
                     var objectCenter = { x: object.x + object.w / 2.0,
                                          y: object.y + object.h / 2.0 };
+                    console.log(objectCenter);
                     if(object.has("PlayerSpawn")) {
                         playerSpawnLoc = objectCenter;
                     } else if(object.has("SlimeSpawn")) {
