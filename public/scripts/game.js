@@ -25,17 +25,20 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
             ],
             "sprites": {
                 "img/ogre.png": {
+                    "tile": 50,
+                    "tileh": 67,
                     "map": { "Ogre": [0,0] }
+                },
+                "img/slime.png": {
+                    "tile": 60,
+                    "tileh": 36,
+                    "map": { "Slime": [0,0] }
                 }
             }
         }
         
         //Preload assets first
         Crafty.load(assets, function() {
-            Crafty.sprite(50,67,"img/ogre.png", {
-                Ogre:[0,0]
-            }); 
-
             $.ajax({
                 url:'/maps/untitled.json',
                 cache: false,
@@ -53,6 +56,16 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
     });
     
     Crafty.scene("Load");
+
+    var makeSlime = function(pos) {
+        return Crafty.e("2D, Canvas, GravityFull, SpriteAnimation, Slime, Collision, Enemy")
+            .attr({x: 500, y: 50})
+            .reel("idle", 750, 0, 0, 10)
+            .reel("die", 500, 0, 1, 5)
+            .animate("idle", -1)
+            .gravityfull("Platforms")
+            .collision();
+    };
                         
     Crafty.scene("Main", function () {
                                     
@@ -73,9 +86,14 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
                 var objects = tiledmap.getEntitiesInLayer("Objects");
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
+                    var objectCenter = { x: object.x + object.w / 2.0,
+                                         y: object.y + object.h / 2.0 };
                     if(object.has("PlayerSpawn")) {
-                        playerSpawnLoc = { x: object.x + object.w / 2.0,
-                                           y: object.y + object.h / 2.0 };
+                        playerSpawnLoc = objectCenter;
+                    } else if(object.has("SlimeSpawn")) {
+                        var slime = makeSlime(objectCenter);
+                    } else {
+                        console.log("WARNING: Found unknown object ", object);
                     }
                 }
 
@@ -90,7 +108,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
             });
                                                                                                                                     
         //Player
-        var player = Crafty.e("2D, Canvas, Twoway, GravityFull, SpriteAnimation, Ogre, Collision")
+        var player = Crafty.e("2D, Canvas, Twoway, GravityFull, SpriteAnimation, Ogre, Collision, EnemyJumper")
             .attr({ x: playerSpawnLoc.x, y: playerSpawnLoc.y, z: 10 })
             .reel("idle", 1000, 0, 0, 1)
             .reel("walk_down", 500, 0, 0, 4)

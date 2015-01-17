@@ -8,6 +8,7 @@ define(['crafty'], function(Crafty) {
 
         init: function () {
             this.requires("2D");
+            this.requires("Collision");
         },
 
         gravityfull: function (comp) {
