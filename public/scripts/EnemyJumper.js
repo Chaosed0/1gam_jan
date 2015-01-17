@@ -24,16 +24,20 @@ define(['crafty', './Expires'], function(Crafty) {
             if (gotHit) {
                 var collisionData = gotHit[0];
                 var obj = collisionData.obj;
-                if(collisionData.normal.y < 0) {
-                    //We hit the enemy from above, kill it and jump
-                    this._gy = -this._jumpSpeed;
-                    
-                    //This is not scalable - figure out how to do this better
-                    obj.animate("die")
-                       .addComponent('Expires')
-                       .expires(2000);
-                } else {
-                    //We hit the enemy from somewhere else, we're dead
+
+                //Make sure the object isn't dead already
+                if(!obj.has("Expires")) {
+                    if(collisionData.normal.y < 0) {
+                        //We hit the enemy from above, kill it and jump
+                        this._gy = -this._jumpSpeed;
+                        
+                        //This is not scalable - figure out how to do this better
+                        obj.animate("die")
+                           .addComponent("Expires")
+                           .expires(2000);
+                    } else {
+                        //We hit the enemy from somewhere else, we're dead
+                    }
                 }
             }
         },
