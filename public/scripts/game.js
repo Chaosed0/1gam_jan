@@ -1,6 +1,7 @@
 
 define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
-        './GravityFull'
+        './GravityFull',
+        './EnemyJumper'
     ], function(Crafty, $) {
     var self = this;
     var map;
@@ -118,6 +119,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
             .twoway(6, 8)
             .collision()
             .gravityfull('Platforms')
+            .enemyjumper('Enemy')
             .bind("NewDirection", function (direction) {
                     if (direction.x < 0) {
                         if (!this.isPlaying("walk_left"))

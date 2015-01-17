@@ -1,5 +1,5 @@
 
-define(['crafty', function(Crafty) {
+define(['crafty'], function(Crafty) {
 
     Crafty.c("Expires", {
         _time: 2000,
