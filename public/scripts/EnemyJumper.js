@@ -27,7 +27,7 @@ define(['crafty', './Expires'], function(Crafty) {
 
                 //Make sure the object isn't dead already
                 if(!obj.has("Expires")) {
-                    if(collisionData.normal.y < 0) {
+                    if(this._gy > this._jumpSpeed && collisionData.normal.y < 0) {
                         //We hit the enemy from above, kill it and jump
                         this._gy = 0;
                         
