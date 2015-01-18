@@ -1,5 +1,38 @@
 
 define(['crafty'], function(Crafty) {
+    var enterFrame = function() {
+        //if falling, accelerate
+        this._gy += this._gravityConst;
+        this.y += this._gy;
+        this.trigger('Moved', { x: this._x, y: this._y - this._gy });
+    };
+
+    var moved = function() {
+        var gotHit = this.hit(this._anti);
+        //If we're intersecting, push the player out
+        if (gotHit) {
+            var obj = gotHit[0];
+            //Add 1 to y so we're still hitting the obstacle;
+            // otherwise, we alternate between falling/not falling
+            // every frame
+            this.x -= obj.normal.x * obj.overlap;
+            this.y -= obj.normal.y * obj.overlap;
+            this.trigger("hit");
+            if(obj.normal.y < 0) {
+                //If we were falling, stop falling
+                this._falling = false;
+                this._gy = 0;
+                this._up = false;
+            } else if(obj.normal.y > 0) {
+                //We hit a ceiling, start going down
+                this._up = false;
+            }
+        } else {
+            this._falling = true;
+        }
+        this.z = Math.floor(this._y + this._h);
+    };
+
     Crafty.c("GravityFull", {
         _gravityConst: 0.2,
         _gy: 0,
@@ -15,7 +48,8 @@ define(['crafty'], function(Crafty) {
             if (comp) this._anti = comp;
             if(isNaN(this._jumpSpeed)) this._jumpSpeed = 0; //set to 0 if Twoway component is not present
 
-            this.bind("EnterFrame", this._enterFrame);
+            this.bind("Moved", moved);
+            this.bind("EnterFrame", enterFrame);
 
             return this;
         },
@@ -23,42 +57,6 @@ define(['crafty'], function(Crafty) {
         gravityConst: function (g) {
             this._gravityConst = g;
             return this;
-        },
-
-        _enterFrame: function () {
-            if (this._falling) {
-                //if falling, move the players Y
-                this._gy += this._gravityConst;
-                this.y += this._gy;
-                this.trigger('Moved', { x: this._x, y: this._y - this._gy });
-            } else {
-                this._gy = 0; //reset change in y
-            }
-
-            var gotHit = this.hit(this._anti);
-            //If we're intersecting, push the player out
-            if (gotHit) {
-                var obj = gotHit[0];
-                //Add 1 to y so we're still hitting the obstacle;
-                // otherwise, we alternate between falling/not falling
-                // every frame
-                this.x -= obj.normal.x * obj.overlap;
-                this.y -= obj.normal.y * obj.overlap -
-                    (obj.normal.y < 0 ? 1 : 0);
-                this.trigger("hit");
-                if(obj.normal.y < 0) {
-                    //If we were falling, stop falling
-                    if(this._up) this._up = false;
-                    this._falling = false;
-                } else if(obj.normal.y > 0) {
-                    //We hit a ceiling, start going down
-                    this._gy = this._jumpSpeed;
-                }
-            } else {
-                //Not hitting anything - keep falling
-                this._falling = true;
-            }
-            this.z = Math.floor(this._y + this._h);
         },
 
         antigravity: function () {
