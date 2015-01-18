@@ -35,16 +35,16 @@ define(['crafty'], function(Crafty) {
                 this._gy = 0; //reset change in y
             }
 
-            //If, after falling, we're intersecting, push the player out
             var gotHit = this.hit(this._anti);
+            //If we're intersecting, push the player out
             if (gotHit) {
                 var obj = gotHit[0];
                 //Add 1 to y so we're still hitting the obstacle;
                 // otherwise, we alternate between falling/not falling
                 // every frame
-                this.attr({x: this._x - obj.normal.x * obj.overlap,
-                    y: this._y - obj.normal.y * obj.overlap + 
-                        (obj.normal.y != 0 ? 1 : 0)});
+                this.x -= obj.normal.x * obj.overlap,
+                this.y -= obj.normal.y * obj.overlap -
+                    (obj.normal.y < 0 ? 1 : 0);
                 this.trigger("hit");
                 if(obj.normal.y < 0) {
                     //If we were falling, stop falling
