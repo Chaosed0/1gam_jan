@@ -42,7 +42,7 @@ define(['crafty'], function(Crafty) {
                 //Add 1 to y so we're still hitting the obstacle;
                 // otherwise, we alternate between falling/not falling
                 // every frame
-                this.x -= obj.normal.x * obj.overlap,
+                this.x -= obj.normal.x * obj.overlap;
                 this.y -= obj.normal.y * obj.overlap -
                     (obj.normal.y < 0 ? 1 : 0);
                 this.trigger("hit");
