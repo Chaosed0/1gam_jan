@@ -1,5 +1,5 @@
 
-#1gam January
+\#1gam January
 ===========
 
 Repo for my (Edward Lu) entry for 1 game a month, January 2015. Looks like it's shaping up to be a lesser mario clone.
