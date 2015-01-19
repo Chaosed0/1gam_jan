@@ -1,5 +1,5 @@
 
-Square Dance
+#1gam January
 ===========
 
-A game made for Ludum Dare 31 using the Crafty engine, Bower, Require, and a hint of Node. <a href="http://straypixels.net/ld31/public/index.html">Try it live here.</a>
+Repo for my (Edward Lu) entry for 1 game a month, January 2015. Looks like it's shaping up to be a lesser mario clone.
