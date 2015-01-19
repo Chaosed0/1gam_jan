@@ -63,7 +63,7 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
         return Crafty.e("2D, Canvas, GravityFull, SpriteAnimation, Slime, Collision, RandomEnemyMovement, Enemy")
             .attr({x: pos.x, y: pos.y})
             .reel("idle", 750, 0, 0, 10)
-            .reel("die", 500, 0, 1, 5)
+            .reel("die", 500, 0, 1, 6)
             .animate("idle", -1)
             .gravityfull("Platforms")
             .randomEnemyMovement()
