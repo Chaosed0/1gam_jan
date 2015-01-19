@@ -25,7 +25,7 @@ define(['crafty'], function(Crafty) {
                 this._up = false;
             } else if(obj.normal.y > 0) {
                 //We hit a ceiling, start going down
-                this._up = false;
+                this._gy = this._jumpSpeed;
             }
         } else {
             this._falling = true;
