@@ -7,7 +7,8 @@ require.config({
     jquery: "../bower_components/jquery/dist/jquery",
     require: "../bower_components/requirejs/require",
     TiledMapBuilder: "../TiledMapBuilder/tiledmapbuilder",
-    TiledMapMocks: "../TiledMapBuilder/create_mocks_module"
+    TiledMapMocks: "../TiledMapBuilder/create_mocks_module",
+    util: "./Util"
   },
   packages: [
 

@@ -1,7 +1,8 @@
 
 define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
         './GravityFull',
-        './EnemyJumper'
+        './EnemyJumper',
+        './RandomEnemyMovement'
     ], function(Crafty, $) {
     var self = this;
     var map;
@@ -59,12 +60,13 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
     Crafty.scene("Load");
 
     var makeSlime = function(pos) {
-        return Crafty.e("2D, Canvas, GravityFull, SpriteAnimation, Slime, Collision, Enemy")
+        return Crafty.e("2D, Canvas, GravityFull, SpriteAnimation, Slime, Collision, RandomEnemyMovement, Enemy")
             .attr({x: pos.x, y: pos.y})
             .reel("idle", 750, 0, 0, 10)
             .reel("die", 500, 0, 1, 5)
             .animate("idle", -1)
             .gravityfull("Platforms")
+            .randomEnemyMovement()
             .collision();
     };
                         
@@ -89,7 +91,6 @@ define(['crafty', 'jquery', 'TiledMapBuilder', 'TiledMapMocks',
                     var object = objects[i];
                     var objectCenter = { x: object.x + object.w / 2.0,
                                          y: object.y + object.h / 2.0 };
-                    console.log(objectCenter);
                     if(object.has("PlayerSpawn")) {
                         playerSpawnLoc = objectCenter;
                     } else if(object.has("SlimeSpawn")) {
