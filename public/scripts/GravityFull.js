@@ -8,22 +8,24 @@ define(['crafty'], function(Crafty) {
     };
 
     var moved = function() {
-        var gotHit = this.hit(this._anti);
+        var collisions = this.hit(this._anti);
+        var gotHit = (collisions != false);
+
         //If we're intersecting, push the player out
         if (gotHit) {
-            var obj = gotHit[0];
+            var data = collisions[0];
             //Add 1 to y so we're still hitting the obstacle;
             // otherwise, we alternate between falling/not falling
             // every frame
-            this.x -= obj.normal.x * obj.overlap;
-            this.y -= obj.normal.y * obj.overlap;
-            this.trigger("Hit", obj);
-            if(obj.normal.y < 0) {
+            this.x -= data.normal.x * data.overlap;
+            this.y -= data.normal.y * data.overlap;
+            this.trigger("Hit", data);
+            if(data.normal.y < 0) {
                 //If we were falling, stop falling
                 this._falling = false;
                 this._gy = 0;
                 this._up = false;
-            } else if(obj.normal.y > 0) {
+            } else if(data.normal.y > 0) {
                 //We hit a ceiling, start going down
                 this._gy = this._jumpSpeed;
             }
